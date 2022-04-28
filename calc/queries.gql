@@ -1,0 +1,36 @@
+# https://docs.github.com/en/graphql/overview/explorer
+query repoInfo($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    id
+    nameWithOwner
+    description
+    createdAt
+  }
+}
+
+query repoCommits($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    id
+    nameWithOwner
+    object(expression: "main") {
+      ... on Commit {
+        history(first: 100) {
+          edges {
+            node {
+              oid
+              url
+              message
+              changedFiles
+              committedDate
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+variables {
+  "owner": "jhojin7",
+  "name": "problem-solving"
+}
