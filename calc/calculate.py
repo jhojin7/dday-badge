@@ -1,23 +1,36 @@
-from datetime import date, timedelta
+from datetime import date
 
-def find_streak(df):
-    """ WORK IN PROGRESS """
-    # extract date and counts
-    commits_count = df['committedDate'].value_counts()
-    # commits_count = commits_count.to_string()
-    print(commits_count)
-    # print(commits_count.to_json())
+def find_max_streak(dates:list):
+    """ finds the longest streak in a chronologically sorted list.
+    Returns max_steak list """
+    cur_streak = [dates[0]]
+    max_streak = []
+    for i in range(1,len(dates)):
+        # if date diff = 1, append to cur_streak
+        prev = date.fromisoformat(dates[i-1])
+        cur = date.fromisoformat(dates[i])
+        if (cur - prev).days == 1:# if dates[i-1]+1 == dates[i]:
+            cur_streak.append(dates[i])
+        else:
+            # if current streak is the longest streak, let it be max_streak
+            if len(cur_streak) > len(max_streak):
+                max_streak[:] = cur_streak[:]
+                # reset cur_streak to 1
+                cur_streak = [dates[i]]
+            else: # else just clean cur_streak only
+                cur_streak = [dates[i]]
+    # check before returning if max_streak is the longest
+    if len(cur_streak) > len(max_streak): 
+        max_streak[:] = cur_streak[:]
+    return max_streak
 
-    # for dddd in df['committedDate']:
-        # print(date.fromisoformat(dddd))
-    # for key,val in commits_count:
-    for i in range(1,len(commits_count)):
-        # yyyy = date.fromisoformat(key).year
-        # mm = date.fromisoformat(key).month
-        # dd = date.fromisoformat(key).day
-        print(commits_count[i])
-        prev = date.fromisoformat(commits_count[i-1])
-        curr = date.fromisoformat(commits_count[i])
-        print(prev, curr)
+# def test_find_max_streak():
+#     # chronologically sorted dates
+#     dates = [1,2,4,5,6,7,8,9,10,11,13,14,20,21,22,23,24,25,26,27,28,29]
+#     expected = [20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
+#     max_streak = find_max_streak(dates)
+#     print(max_streak, len(max_streak))
+#     print("expected:", expected, (max_streak==expected))
 
-        # print(date.fromisoformat(key),commits_count[key])
+# if __name__=='__main__':
+#     # test_find_max_streak()

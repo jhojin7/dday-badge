@@ -4,6 +4,7 @@ import json
 import pandas as pd
 from copy import copy
 import dotenv
+import calculate
 
 query_str = """
 query repoCommits($owner: String!, $name: String!) {
@@ -65,7 +66,13 @@ if __name__ == '__main__':
 
     # make pandas df
     df = pd.DataFrame(commits)
-    print(df.head())
+    # drop duplicate dates, cast it to list, reverse list order
+    dates = df['committedDate'].drop_duplicates().to_list()[::-1]
+    print(dates)
+    max_streak = calculate.find_max_streak(dates)
+    print(len(max_streak), max_streak)
+    # ['2022-04-21', '2022-04-26', '2022-04-27', '2022-04-28']
+    # 3 ['2022-04-26', '2022-04-27', '2022-04-28']
 
     # # export
     # df.to_html('temp.html')
