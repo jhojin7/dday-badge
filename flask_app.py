@@ -1,11 +1,15 @@
+# flask related
 from flask import Flask, jsonify, redirect, request
+from badges.badges_bp import badges_bp
+# misc
 import datetime
 
 app = Flask(__name__)
+app.register_blueprint(badges_bp,url_prefix='/badges')
 
 @app.route("/")
 def hello():
-    return jsonify({'ping':True})
+    return "main"
 
 @app.route("/schema",methods=['GET'])
 def make_shields_schema():
@@ -40,3 +44,9 @@ def shield():
     schema_url = "https://jhojin.pythonanywhere.com/schema"
     url = base_url.format(schema_url)
     return redirect(url)
+
+if __name__=='__main__':
+    print(app.url_map)
+    app.run(host='localhost', port = 5000, 
+        debug = True
+    )
