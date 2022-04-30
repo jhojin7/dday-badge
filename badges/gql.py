@@ -4,7 +4,7 @@ import json
 import pandas as pd
 from copy import copy
 import dotenv
-import calculate
+from . import calculate
 
 query_str = """
 query repoCommits($owner: String!, $name: String!) {
@@ -30,14 +30,15 @@ query repoCommits($owner: String!, $name: String!) {
 }
 """
 
-if __name__ == '__main__':
-    """ WORK IN PROGRESS """
+# if __name__ == '__main__':
+#     """ WORK IN PROGRESS """
+def repoCommits(user:str, repo:str) -> list:
     # env variables
     dotenv.load_dotenv()
     GQL_TOKEN = os.getenv("GQL_TOKEN")
     # graphql variables
-    user = 'jhojin7'
-    repo = 'problem-solving'
+    # user = 'jhojin7'
+    # repo = 'problem-solving'
     gql_vars = {
         "owner": user,
         "name": repo
@@ -68,11 +69,9 @@ if __name__ == '__main__':
     df = pd.DataFrame(commits)
     # drop duplicate dates, cast it to list, reverse list order
     dates = df['committedDate'].drop_duplicates().to_list()[::-1]
-    print(dates)
+    # find max streak for this repo
     max_streak = calculate.find_max_streak(dates)
-    print(len(max_streak), max_streak)
-    # ['2022-04-21', '2022-04-26', '2022-04-27', '2022-04-28']
-    # 3 ['2022-04-26', '2022-04-27', '2022-04-28']
+    return max_streak
 
     # # export
     # df.to_html('temp.html')
