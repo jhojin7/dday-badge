@@ -1,5 +1,5 @@
 from flask import Blueprint
-from .streaks import streaks_bp
+from badges.streaks import streaks_bp
 
 badges_bp = Blueprint("badges_bp",__name__,
     static_url_path="badges")

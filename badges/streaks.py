@@ -1,5 +1,5 @@
 from flask import Blueprint, make_response, redirect, render_template, send_file
-from .gql import repoCommits
+from badges.gql import repoCommits
 
 streaks_bp = Blueprint("streaks_bp",__name__,static_url_path="streaks")
 
@@ -17,7 +17,4 @@ def streaks_repo(user, repo):
     message = f"{len(max_streak)}"
     color= "success"
     url = f"https://img.shields.io/static/v1?label={label}&message={message}&style=flat"
-    # response = make_response(url)
-    # response.headers.set('Content-Type', '*/*')
-    # return response
     return redirect(url)
