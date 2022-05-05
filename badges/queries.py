@@ -30,15 +30,10 @@ query repoCommits($owner: String!, $name: String!) {
 }
 """
 
-# if __name__ == '__main__':
-#     """ WORK IN PROGRESS """
 def repoCommits(user:str, repo:str) -> list:
     # env variables
     dotenv.load_dotenv()
     GQL_TOKEN = os.getenv("GQL_TOKEN")
-    # graphql variables
-    # user = 'jhojin7'
-    # repo = 'problem-solving'
     gql_vars = {
         "owner": user,
         "name": repo
@@ -47,15 +42,16 @@ def repoCommits(user:str, repo:str) -> list:
     gql_header = {"Authorization": 'bearer ' + GQL_TOKEN}
     gql_body = {'query': query_str, 'variables': gql_vars}
     # POST request
-    response = json.loads(requests.post(
-        gql_url, headers=gql_header, json=gql_body).text)
-
-    # if gql sript error, print response
-    if ('errors' or 'message') in response.keys():
-        print(response)
+    try:
+      response = json.loads(requests.post(
+          gql_url, headers=gql_header, json=gql_body).text)
+      commits = response['data']['repository']['object']['history']['edges']
+    except TypeError:
+        return TypeError
 
     # get commits list
-    commits = response['data']['repository']['object']['history']['edges']
+    # try:
+    #   commits = response['data']['repository']['object']['history']['edges']
 
     # process json object for df
     for i in range(len(commits)):
