@@ -3,7 +3,7 @@ from flask import (Blueprint, Response,
 import requests as pyrequest
 import datetime
 
-DOMAIN = "https://c115-222-109-9-142.jp.ngrok.io"
+DOMAIN = "https://jhojin7ddaybadges.herokuapp.com"
 dday_bp = Blueprint("dday_bp",__name__,static_url_path="dday")
 
 @dday_bp.route("/schema")#,methods=['GET'])
